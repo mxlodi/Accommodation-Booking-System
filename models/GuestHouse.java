@@ -23,6 +23,7 @@ public class GuestHouse extends Accommodation {
         System.out.println("Name: " + getName());
         System.out.println("Price: $" + getPricePerNight() + "/night");
         System.out.println("Breakfast: " + (hasBreakfast ? "Yes" : "No"));
+        System.out.println("Elevator: " + (hasElevator ? "Yes" : "No"));
     }
 
     // Fixed: Added the missing implementation of displayName()

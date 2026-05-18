@@ -2,9 +2,8 @@ package models;
 
 import java.time.LocalDateTime;
 import interfaces.Displayable;
-import interfaces.Payable;
 
-public class Payment implements Displayable, Payable {
+public class Payment implements Displayable{
     private int paymentId;
     private Booking booking;
     private double amount;
@@ -44,7 +43,6 @@ public class Payment implements Displayable, Payable {
         return method.equals("CASH") || method.equals("CARD") || method.equals("ONLINE");
     }
 
-    @Override
     public void processPayment() {
         if (!completed) {
             this.completed = true;
@@ -52,10 +50,8 @@ public class Payment implements Displayable, Payable {
         }
     }
 
-    @Override
     public double getAmount() { return amount; }
 
-    @Override
     public boolean isPaid() { return completed; }
 
     @Override

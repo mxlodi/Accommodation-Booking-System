@@ -1,11 +1,10 @@
 package models;
 
-import interfaces.StatusChangeable;
 import interfaces.Displayable;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public class Booking implements StatusChangeable, Displayable {
+public class Booking implements Displayable {    
     private int bookingId;
     private User user;
     private Accommodation accommodation;
@@ -33,13 +32,11 @@ public class Booking implements StatusChangeable, Displayable {
     public String getCheckInDate() { return checkInDate.toString(); }
     public String getCheckOutDate() { return checkOutDate.toString(); }
 
-    @Override
     public BookingStatus getStatus() { return status; }
 
-    @Override
     public void setStatus(BookingStatus status) { this.status = status; }
 
-    @Override
+
     public boolean canChangeTo(BookingStatus newStatus) {
         if (this.status == BookingStatus.CONFIRMED) {
             return newStatus == BookingStatus.CHECKED_IN || newStatus == BookingStatus.CANCELLED;

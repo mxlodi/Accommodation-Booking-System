@@ -10,6 +10,9 @@ public class Apartment extends Accommodation {
         this.hasElevator = elevator;
     }
 
+    public int getFloor() { return floor; }
+    public boolean hasElevator() { return hasElevator; }  // ← Fixed naming
+
     @Override
     public String getType() { return "APARTMENT"; }
 

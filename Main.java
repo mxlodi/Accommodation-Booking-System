@@ -7,7 +7,7 @@ public class Main {
 
         // Demonstrating Inheritance: Creating specific subclasses
         User guest = new User(1, "Teddy", "teddy@email.com", "12345");
-        Hotel plaza = new Hotel(10, "Hotel Plaza", 200.0, 2, 5, true);
+        Hotel plaza = new Hotel(10, "Hotel Plaza", 200.0, 100, 5, true, true);
         Apartment loft = new Apartment(20, "City Loft", 120.0, 4, 10, true);
 
         repo.addUser(guest);

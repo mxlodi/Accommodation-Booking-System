@@ -10,12 +10,38 @@ public abstract class Accommodation implements Displayable, Bookable {
     private String name;
     private double pricePerNight;
     private int capacity;
-
+    
+    // Constructor using setters for validation safety
     public Accommodation(int accId, String name, double pricePerNight, int capacity) {
         this.accId = accId;
-        this.name = name;
-        this.pricePerNight = pricePerNight;
-        this.capacity = capacity;
+        setName(name);
+        setPricePerNight(pricePerNight);
+        setCapacity(capacity);
+    }
+
+    // Setters with validation logic restored
+    public void setName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            this.name = "Unknown Accommodation";
+        } else {
+            this.name = name;
+        }
+    }
+
+    public void setPricePerNight(double pricePerNight) {
+        if (pricePerNight < 0) {
+            this.pricePerNight = 50.0; // Default fallback price
+        } else {
+            this.pricePerNight = pricePerNight;
+        }
+    }
+
+    public void setCapacity(int capacity) {
+        if (capacity < 1) {
+            this.capacity = 1; // Minimum capacity 
+        } else {
+            this.capacity = capacity;
+        }
     }
 
     // Abstract method: Every specific type must identify itself
