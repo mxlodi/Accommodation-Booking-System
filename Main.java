@@ -14,7 +14,7 @@ public class Main {
         repo.addHotel(plaza);
         repo.addApartment(loft);
 
-        // EXTRA ADDITION: Actually display the child classes to prove Inheritance works!
+        // display the child classes to prove Inheritance works
         System.out.println("--- Inheritance & Polymorphism Demo ---");
         plaza.display();
         System.out.println();
