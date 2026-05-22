@@ -10,7 +10,7 @@ public abstract class Accommodation implements Displayable, Bookable {
     private String name;
     private double pricePerNight;
     private int capacity;
-    
+
     // Constructor using setters for validation safety
     public Accommodation(int accId, String name, double pricePerNight, int capacity) {
         this.accId = accId;
@@ -38,7 +38,7 @@ public abstract class Accommodation implements Displayable, Bookable {
 
     public void setCapacity(int capacity) {
         if (capacity < 1) {
-            this.capacity = 1; // Minimum capacity 
+            this.capacity = 1; // Minimum capacity
         } else {
             this.capacity = capacity;
         }
@@ -52,10 +52,21 @@ public abstract class Accommodation implements Displayable, Bookable {
     }
 
     // Common Getters
-    public int getAccId() { return accId; }
-    public String getName() { return name; }
-    public double getPricePerNight() { return pricePerNight; }
-    public int getCapacity() { return capacity; }
+    public int getAccId() {
+        return accId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPricePerNight() {
+        return pricePerNight;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
 
     // Shared business logic: Check if dates overlap with existing bookings
     public boolean isAvailable(LocalDate checkIn, LocalDate checkOut, Collection<Booking> allBookings) {

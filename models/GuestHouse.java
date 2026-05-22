@@ -26,7 +26,6 @@ public class GuestHouse extends Accommodation {
         System.out.println("Elevator: " + (hasElevator ? "Yes" : "No"));
     }
 
-    // Fixed: Added the missing implementation of displayName()
     @Override
     public void displayName() {
         System.out.println("GuestHouse: " + getName());
