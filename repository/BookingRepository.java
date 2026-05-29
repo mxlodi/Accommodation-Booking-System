@@ -45,6 +45,19 @@ public class BookingRepository implements Searchable {
         apt.displayName();
     }
 
+    // OVERLOADED ACCOMMODATION METHODS
+    public void addAccommodation(Hotel hotel) {
+        addHotel(hotel);
+    }
+
+    public void addAccommodation(Apartment apartment) {
+        addApartment(apartment);
+    }
+
+    public void addAccommodation(GuestHouse guestHouse) {
+        addGuestHouse(guestHouse);
+    }
+
     public List<Accommodation> getAllAccommodations() {
         return new ArrayList<>(accommodations);
     }
@@ -248,14 +261,14 @@ public class BookingRepository implements Searchable {
     }
 
     @Override
-    public List<Booking> searchBookingsByDateRange(String startDate, String endDate) {
+    public List<Booking> searchBookingsByDateRange(String startDate, String endDate, BookingStatus status) {
         List<Booking> results = new ArrayList<>();
         LocalDate start = LocalDate.parse(startDate);
         LocalDate end = LocalDate.parse(endDate);
         for (Booking b : allBookings.values()) {
             LocalDate checkIn = LocalDate.parse(b.getCheckInDate());
             LocalDate checkOut = LocalDate.parse(b.getCheckOutDate());
-            if (!(checkIn.isAfter(end) || checkOut.isBefore(start))) {
+            if (!(checkIn.isAfter(end) || checkOut.isBefore(start)) && b.getStatus() == status) {
                 results.add(b);
             }
         }

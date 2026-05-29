@@ -47,6 +47,12 @@ public abstract class Accommodation implements Displayable, Bookable {
     // Abstract method: Every specific type must identify itself
     public abstract String getType();
 
+    @Override
+    public boolean canAccommodate(int numberOfGuests) {
+        return numberOfGuests > 0 && numberOfGuests <= capacity;
+    }
+
+    @Override
     public double calculatePrice(int nights) {
         return pricePerNight * nights;
     }
