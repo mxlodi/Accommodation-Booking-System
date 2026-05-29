@@ -45,18 +45,6 @@ public class BookingRepository implements Searchable {
         apt.displayName();
     }
 
-    // OVERLOADED ACCOMMODATION METHODS
-    public void addAccommodation(Hotel hotel) {
-        addHotel(hotel);
-    }
-
-    public void addAccommodation(Apartment apartment) {
-        addApartment(apartment);
-    }
-
-    public void addAccommodation(GuestHouse guestHouse) {
-        addGuestHouse(guestHouse);
-    }
 
     public List<Accommodation> getAllAccommodations() {
         return new ArrayList<>(accommodations);
@@ -93,6 +81,29 @@ public class BookingRepository implements Searchable {
 
         allBookings.put(booking.getBookingId(), booking);
         System.out.println("[OK] Booking #" + booking.getBookingId() + " created");
+    }
+
+    // OVERLOADED BOOKING METHODS
+    public void addBooking(User user, Accommodation accommodation, String checkIn, String checkOut) {
+        int bookingId = allBookings.size() + 101;  // Auto-generate ID
+        Booking booking = new Booking(bookingId, user, accommodation, checkIn, checkOut, BookingStatus.CONFIRMED);
+        addBooking(booking);
+    }
+
+    public void addBooking(int userId, int accId, String checkIn, String checkOut) {
+        User user = findUserById(userId);
+        Accommodation acc = findAccommodationById(accId);
+
+        if (user == null) {
+            System.out.println("[ERROR] User ID " + userId + " not found!");
+            return;
+        }
+        if (acc == null) {
+            System.out.println("[ERROR] Accommodation ID " + accId + " not found!");
+            return;
+        }
+
+        addBooking(user, acc, checkIn, checkOut);
     }
 
     public void updateBookingStatus(int bookingId, BookingStatus newStatus) {
