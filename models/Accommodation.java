@@ -5,7 +5,7 @@ import interfaces.Bookable;
 import java.time.LocalDate;
 import java.util.Collection;
 
-public abstract class Accommodation implements Displayable, Bookable {
+public class Accommodation implements Displayable, Bookable {
     private int accId;
     private String name;
     private double pricePerNight;
@@ -44,18 +44,28 @@ public abstract class Accommodation implements Displayable, Bookable {
         }
     }
 
-    // Abstract method: Every specific type must identify itself
-    public abstract String getType();
-
+    // Inheritance: Base class for all accommodation types
+    public String getType() {
+    return "ACCOMMODATION";
+}
     @Override
     public boolean canAccommodate(int numberOfGuests) {
         return numberOfGuests > 0 && numberOfGuests <= capacity;
     }
 
-    @Override
-    public double calculatePrice(int nights) {
-        return pricePerNight * nights;
+    public double calculatePrice(int nights, double discount) {
+        double total = pricePerNight * nights;
+        return total - discount;
     }
+
+public double calculatePrice(String checkInDate, String checkOutDate) {
+    LocalDate checkIn = LocalDate.parse(checkInDate);
+    LocalDate checkOut = LocalDate.parse(checkOutDate);
+
+    long nights = java.time.temporal.ChronoUnit.DAYS.between(checkIn, checkOut);
+
+    return pricePerNight * nights;
+}
 
     // Common Getters
     public int getAccId() {
