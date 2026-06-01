@@ -44,28 +44,36 @@ public class Accommodation implements Displayable, Bookable {
         }
     }
 
-    // Inheritance: Base class for all accommodation types
+    // inheritance
     public String getType() {
-    return "ACCOMMODATION";
-}
+        return "ACCOMMODATION";
+    }
+
     @Override
     public boolean canAccommodate(int numberOfGuests) {
         return numberOfGuests > 0 && numberOfGuests <= capacity;
     }
+    
+    @Override
+    public double calculatePrice(int nights) {
+        return pricePerNight * nights;
+    }
 
+    // Overloaded method
     public double calculatePrice(int nights, double discount) {
         double total = pricePerNight * nights;
         return total - discount;
     }
 
-public double calculatePrice(String checkInDate, String checkOutDate) {
-    LocalDate checkIn = LocalDate.parse(checkInDate);
-    LocalDate checkOut = LocalDate.parse(checkOutDate);
+    // Overloaded method
+    public double calculatePrice(String checkInDate, String checkOutDate) {
+        LocalDate checkIn = LocalDate.parse(checkInDate);
+        LocalDate checkOut = LocalDate.parse(checkOutDate);
 
-    long nights = java.time.temporal.ChronoUnit.DAYS.between(checkIn, checkOut);
+        long nights = java.time.temporal.ChronoUnit.DAYS.between(checkIn, checkOut);
 
-    return pricePerNight * nights;
-}
+        return pricePerNight * nights;
+    }
 
     // Common Getters
     public int getAccId() {

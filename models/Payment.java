@@ -49,6 +49,15 @@ public class Payment implements Displayable{
             System.out.println("Payment #" + paymentId + " processed.");
         }
     }
+    public void processPayment(String method) {
+    this.method = method;
+
+    if (!completed) {
+        this.completed = true;
+        System.out.println("Payment #" + paymentId +
+                " processed using " + method);
+    }
+}
 
     public double getAmount() { return amount; }
 

@@ -45,7 +45,6 @@ public class BookingRepository implements Searchable {
         apt.displayName();
     }
 
-
     public List<Accommodation> getAllAccommodations() {
         return new ArrayList<>(accommodations);
     }
@@ -83,29 +82,43 @@ public class BookingRepository implements Searchable {
         System.out.println("[OK] Booking #" + booking.getBookingId() + " created");
     }
 
-    // OVERLOADED BOOKING METHODS
-    public void addBooking(User user, Accommodation accommodation, String checkIn, String checkOut) {
-        int bookingId = allBookings.size() + 101;  // Auto-generate ID
-        Booking booking = new Booking(bookingId, user, accommodation, checkIn, checkOut, BookingStatus.CONFIRMED);
-        addBooking(booking);
+    // Overloaded Method 1
+public void addBooking(User user, Accommodation accommodation,
+                       String checkIn, String checkOut) {
+
+    int bookingId = allBookings.size() + 1;
+
+    Booking booking = new Booking(
+            bookingId,
+            user,
+            accommodation,
+            checkIn,
+            checkOut,
+            BookingStatus.CONFIRMED
+    );
+
+    addBooking(booking);
+}
+
+// Overloaded Method 2
+public void addBooking(int userId, int accId,
+                       String checkIn, String checkOut) {
+
+    User user = findUserById(userId);
+    Accommodation acc = findAccommodationById(accId);
+
+    if (user == null) {
+        System.out.println("[ERROR] User ID " + userId + " not found!");
+        return;
     }
 
-    public void addBooking(int userId, int accId, String checkIn, String checkOut) {
-        User user = findUserById(userId);
-        Accommodation acc = findAccommodationById(accId);
-
-        if (user == null) {
-            System.out.println("[ERROR] User ID " + userId + " not found!");
-            return;
-        }
-        if (acc == null) {
-            System.out.println("[ERROR] Accommodation ID " + accId + " not found!");
-            return;
-        }
-
-        addBooking(user, acc, checkIn, checkOut);
+    if (acc == null) {
+        System.out.println("[ERROR] Accommodation ID " + accId + " not found!");
+        return;
     }
 
+    addBooking(user, acc, checkIn, checkOut);
+}
     public void updateBookingStatus(int bookingId, BookingStatus newStatus) {
         Booking booking = allBookings.get(bookingId);
         if (booking == null) {
@@ -121,7 +134,9 @@ public class BookingRepository implements Searchable {
             return;
         }
         booking.setStatus(newStatus);
-        System.out.println("[OK] Booking #" + bookingId + " status: " + oldStatus + " -> " + newStatus);
+
+        System.out.println("[OK] Booking #" + bookingId +
+                " status: " + oldStatus + " -> " + newStatus);
     }
 
     public void hardDeleteBooking(int bookingId) {
@@ -153,7 +168,10 @@ public class BookingRepository implements Searchable {
             if (b.getUser().getUserId() == userId)
                 history.add(b);
         }
-        history.sort((b1, b2) -> b2.getCheckInDate().compareTo(b1.getCheckInDate()));
+
+        history.sort((b1, b2) ->
+                b2.getCheckInDate().compareTo(b1.getCheckInDate()));
+
         return history;
     }
 
@@ -227,7 +245,6 @@ public class BookingRepository implements Searchable {
         }
         return count;
     }
-
     public int getApartmentCount() {
         int count = 0;
         for (Accommodation a : accommodations) {
@@ -272,14 +289,18 @@ public class BookingRepository implements Searchable {
     }
 
     @Override
-    public List<Booking> searchBookingsByDateRange(String startDate, String endDate, BookingStatus status) {
-        List<Booking> results = new ArrayList<>();
+    public List<Booking> searchBookingsByDateRange(String startDate,  String endDate,BookingStatus status) {
+     List<Booking> results = new ArrayList<>();
+
         LocalDate start = LocalDate.parse(startDate);
         LocalDate end = LocalDate.parse(endDate);
         for (Booking b : allBookings.values()) {
             LocalDate checkIn = LocalDate.parse(b.getCheckInDate());
             LocalDate checkOut = LocalDate.parse(b.getCheckOutDate());
-            if (!(checkIn.isAfter(end) || checkOut.isBefore(start)) && b.getStatus() == status) {
+
+            if (!(checkIn.isAfter(end) || checkOut.isBefore(start))
+                    && b.getStatus() == status) {
+
                 results.add(b);
             }
         }

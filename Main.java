@@ -21,8 +21,20 @@ public class Main {
         loft.display();
 
         System.out.println("\n--- Booking Demo ---");
-        Booking b1 = new Booking(101, guest, plaza, "2026-10-01", "2026-10-05", BookingStatus.CONFIRMED);
-        repo.addBooking(b1);
+        System.out.println("\n--- Booking Demo ---");
+
+// Original addBooking(Booking booking)
+Booking b1 = new Booking(101, guest, plaza,
+        "2026-10-01",
+        "2026-10-05",
+        BookingStatus.CONFIRMED);
+
+repo.addBooking(b1);
+
+// Overloaded addBooking(int userId, int accId, String checkIn, String checkOut)
+repo.addBooking(1, 10,
+        "2026-11-01",
+        "2026-11-03");
 
         // 2. Demonstrating Payment Processing 
         Payment p1 = new Payment(501, b1);
