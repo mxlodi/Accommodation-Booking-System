@@ -1,9 +1,9 @@
 package models;
 
-import java.time.LocalDateTime;
 import interfaces.Displayable;
+import java.time.LocalDateTime;
 
-public class Payment implements Displayable{
+public class Payment implements Displayable {
     private int paymentId;
     private Booking booking;
     private double amount;
@@ -11,12 +11,12 @@ public class Payment implements Displayable{
     private LocalDateTime paymentDate;
     private boolean completed;
 
-    // Fixed: Added constructor with 2 parameters as requested by your code
+    // Constructor overload 1: defaults to CASH payment method
     public Payment(int paymentId, Booking booking) {
-        this(paymentId, booking, "CASH"); // Defaults to CASH
+        this(paymentId, booking, "CASH");
     }
 
-    // Constructor with 3 parameters
+    // Constructor overload 2: caller specifies the method
     public Payment(int paymentId, Booking booking, String method) {
         this.paymentId = paymentId;
         this.booking = booking;
@@ -26,7 +26,6 @@ public class Payment implements Displayable{
         this.completed = false;
     }
 
-    // Fixed: Restored getPaymentId() getter
     public int getPaymentId() {
         return paymentId;
     }
@@ -39,33 +38,58 @@ public class Payment implements Displayable{
         return method;
     }
 
-    public boolean isValidMethod() {
-        return method.equals("CASH") || method.equals("CARD") || method.equals("ONLINE");
+    public double getAmount() {
+        return amount;
     }
 
+    public boolean isPaid() {
+        return completed;
+    }
+
+    public boolean isValidMethod() {
+        return "CASH".equals(method) || "CARD".equals(method) || "ONLINE".equals(method);
+    }
+
+    // Overload 1: process with the already-set method
     public void processPayment() {
         if (!completed) {
             this.completed = true;
-            System.out.println("Payment #" + paymentId + " processed.");
+            System.out.println("[PAYMENT] #" + paymentId
+                    + " processed via " + method
+                    + " | Amount: $" + amount);
         }
     }
+
+    // Overload 2: process and switch to a different method
     public void processPayment(String method) {
-    this.method = method;
-
-    if (!completed) {
-        this.completed = true;
-        System.out.println("Payment #" + paymentId +
-                " processed using " + method);
+        this.method = method;
+        if (!completed) {
+            this.completed = true;
+            System.out.println("[PAYMENT] #" + paymentId
+                    + " processed via " + method
+                    + " | Amount: $" + amount);
+        }
     }
-}
 
-    public double getAmount() { return amount; }
-
-    public boolean isPaid() { return completed; }
+    // Overload 3: process with a method and apply a discount to the amount
+    public void processPayment(String method, double discount) {
+        this.method = method;
+        if (!completed) {
+            this.amount = Math.max(0, this.amount - discount);
+            this.completed = true;
+            System.out.println("[PAYMENT] #" + paymentId
+                    + " processed via " + method
+                    + " | Discount: $" + discount
+                    + " | Final Amount: $" + amount);
+        }
+    }
 
     @Override
     public void display() {
-        System.out.println("Payment ID: " + paymentId + " | Amount: $" + amount);
+        System.out.println("Payment #" + paymentId
+                + " | Method: " + method
+                + " | Amount: $" + amount
+                + " | Paid: " + completed);
     }
 
     @Override

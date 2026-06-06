@@ -1,49 +1,49 @@
 import models.*;
 import repository.BookingRepository;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
+
         BookingRepository repo = new BookingRepository();
 
-        // 1. Creating specific child subclasses to demonstrate Inheritance
-        User guest = new User(1, "Teddy", "teddy@email.com", "12345");
+        // Setup
+        User teddy = new User(1, "Teddy", "teddy@email.com", "12345");
+        User alice = new User(2, "Alice", "alice@email.com", "67890");
+
         Hotel plaza = new Hotel(10, "Hotel Plaza", 200.0, 100, 5, true, true);
         Apartment loft = new Apartment(20, "City Loft", 120.0, 4, 10, true);
+        GuestHouse family = new GuestHouse(30, "Family Guest House", 80.0, 3, true, false);
 
-        repo.addUser(guest);
-        repo.addHotel(plaza);
-        repo.addApartment(loft);
+        repo.addUser(teddy);
+        repo.addUser(alice);
+        repo.addAccommodation(plaza);
+        repo.addAccommodation(loft);
+        repo.addAccommodation(family);
 
-        // display the child classes to prove Inheritance works
-        System.out.println("--- Inheritance & Polymorphism Demo ---");
-        plaza.display();
-        System.out.println();
-        loft.display();
+        ArrayList<Accommodation> accommodations = new ArrayList<>();
+        accommodations.add(plaza);
+        accommodations.add(loft);
+        accommodations.add(family);
 
-        System.out.println("\n--- Booking Demo ---");
-        System.out.println("\n--- Booking Demo ---");
+        System.out.println("\n");
+        for (Accommodation acc : accommodations) {
+            acc.display();
+            System.out.println("Type: " + acc.getType());
+            System.out.println();
+        }
 
-// Original addBooking(Booking booking)
-Booking b1 = new Booking(101, guest, plaza,
-        "2026-10-01",
-        "2026-10-05",
-        BookingStatus.CONFIRMED);
+        // Polymorphic price calculation — same method call, different prices
+        System.out.println("=== CalculatePrice (3 nights) ===");
+        for (Accommodation acc : accommodations) {
+            System.out.printf("  %-22s $%.2f%n", acc.getName(), acc.calculatePrice(3));
+        }
 
-repo.addBooking(b1);
+        // Bookings through the polymorphic list
+        System.out.println("\n=== Bookings ===");
+        repo.addBooking(teddy, plaza, "2026-10-01T14:00", "2026-10-04T11:00");
+        repo.addBooking(alice, loft, "2026-10-10T15:00", "2026-10-13T11:00");
 
-// Overloaded addBooking(int userId, int accId, String checkIn, String checkOut)
-repo.addBooking(1, 10,
-        "2026-11-01",
-        "2026-11-03");
-
-        // 2. Demonstrating Payment Processing 
-        Payment p1 = new Payment(501, b1);
-        p1.processPayment();
-        p1.display();
-
-        // 3. Demonstrating Business Logic for Status Transitions
-        System.out.println("\n--- Status Transition Check ---");
-        boolean canCancel = b1.canChangeTo(BookingStatus.CANCELLED);
-        System.out.println("Can cancel confirmed booking? " + canCancel);
+        repo.displayAllData();
     }
 }

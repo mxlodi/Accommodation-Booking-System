@@ -3,6 +3,7 @@ package models;
 import interfaces.Displayable;
 import interfaces.Bookable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 public class Accommodation implements Displayable, Bookable {
@@ -53,7 +54,7 @@ public class Accommodation implements Displayable, Bookable {
     public boolean canAccommodate(int numberOfGuests) {
         return numberOfGuests > 0 && numberOfGuests <= capacity;
     }
-    
+
     @Override
     public double calculatePrice(int nights) {
         return pricePerNight * nights;
@@ -62,16 +63,21 @@ public class Accommodation implements Displayable, Bookable {
     // Overloaded method
     public double calculatePrice(int nights, double discount) {
         double total = pricePerNight * nights;
-        return total - discount;
+        return Math.max(0, total - discount);
     }
 
     // Overloaded method
-    public double calculatePrice(String checkInDate, String checkOutDate) {
-        LocalDate checkIn = LocalDate.parse(checkInDate);
-        LocalDate checkOut = LocalDate.parse(checkOutDate);
+    public double calculatePrice(LocalDateTime checkIn, LocalDateTime checkOut) {
+        if (checkIn == null || checkOut == null || !checkOut.isAfter(checkIn)) {
+            return 0.0;
+        }
+        long nights = java.time.temporal.ChronoUnit.DAYS.between(
+                checkIn.toLocalDate(), checkOut.toLocalDate());
 
-        long nights = java.time.temporal.ChronoUnit.DAYS.between(checkIn, checkOut);
-
+        // Same-day bookings charge a minimum of 1 night
+        if (nights == 0) {
+            nights = 1;
+        }
         return pricePerNight * nights;
     }
 
@@ -104,5 +110,18 @@ public class Accommodation implements Displayable, Bookable {
             }
         }
         return true;
+    }
+
+    @Override
+    public void display() {
+        System.out.println("[" + getType() + "] " + name);
+        System.out.println("  ID       : " + accId);
+        System.out.println("  Price    : $" + pricePerNight + "/night");
+        System.out.println("  Capacity : " + capacity + " guests");
+    }
+
+    @Override
+    public void displayName() {
+        System.out.println(getType() + ": " + name);
     }
 }
