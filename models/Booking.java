@@ -1,10 +1,9 @@
 package models;
-import interfaces.Displayable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
-public class Booking implements Displayable {    
+import interfaces.Displayable;
+import java.time.LocalDateTime;
+
+public class Booking implements Displayable {
     private int bookingId;
     private User user;
     private Accommodation accommodation;
@@ -12,8 +11,9 @@ public class Booking implements Displayable {
     private LocalDateTime checkOutDateTime;
     private BookingStatus status;
 
+    // Constructor accepts ISO date-time strings: "2026-10-01T14:00"
     public Booking(int id, User user, Accommodation acc,
-                   String checkIn, String checkOut, BookingStatus status) {
+            String checkIn, String checkOut, BookingStatus status) {
         this.bookingId = id;
         this.user = user;
         this.accommodation = acc;
@@ -27,24 +27,43 @@ public class Booking implements Displayable {
                 && checkOutDateTime.isAfter(checkInDateTime);
     }
 
-    public int getBookingId() { return bookingId; }
-    public User getUser() { return user; }
-    public Accommodation getAccommodation() { return accommodation; }
+    public int getBookingId() {
+        return bookingId;
+    }
 
+    public User getUser() {
+        return user;
+    }
+
+    public Accommodation getAccommodation() {
+        return accommodation;
+    }
 
     // Returns just the date part as a String (used by availability checks)
-    public String getCheckInDate() { return checkInDateTime.toLocalDate().toString(); }
-    public String getCheckOutDate() { return checkOutDateTime.toLocalDate().toString(); }
- 
+    public String getCheckInDate() {
+        return checkInDateTime.toLocalDate().toString();
+    }
+
+    public String getCheckOutDate() {
+        return checkOutDateTime.toLocalDate().toString();
+    }
+
     // Full datetime getters for price calculation
-    public LocalDateTime getCheckInDateTime() { return checkInDateTime; }
-    public LocalDateTime getCheckOutDateTime() { return checkOutDateTime; }
+    public LocalDateTime getCheckInDateTime() {
+        return checkInDateTime;
+    }
 
-    
-    public BookingStatus getStatus() { return status; }
+    public LocalDateTime getCheckOutDateTime() {
+        return checkOutDateTime;
+    }
 
-    public void setStatus(BookingStatus status) { this.status = status; }
+    public BookingStatus getStatus() {
+        return status;
+    }
 
+    public void setStatus(BookingStatus status) {
+        this.status = status;
+    }
 
     public boolean canChangeTo(BookingStatus newStatus) {
         if (this.status == BookingStatus.CONFIRMED) {
@@ -58,8 +77,9 @@ public class Booking implements Displayable {
     }
 
     public double calculateTotalPrice() {
-        if (accommodation == null) return 0.0;
-        // Uses the LocalDateTime overload for accurate real booking flow
+        if (accommodation == null)
+            return 0.0;
+        // Uses the LocalDateTime overload — most accurate for real booking flow
         return accommodation.calculatePrice(checkInDateTime, checkOutDateTime);
     }
 

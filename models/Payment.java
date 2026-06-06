@@ -46,6 +46,10 @@ public class Payment implements Displayable {
         return completed;
     }
 
+    public LocalDateTime getPaymentDate() {
+        return paymentDate;
+    }
+
     public boolean isValidMethod() {
         return "CASH".equals(method) || "CARD".equals(method) || "ONLINE".equals(method);
     }
@@ -89,7 +93,8 @@ public class Payment implements Displayable {
         System.out.println("Payment #" + paymentId
                 + " | Method: " + method
                 + " | Amount: $" + amount
-                + " | Paid: " + completed);
+                + " | Paid: " + completed
+                + " | Date: " + paymentDate);
     }
 
     @Override
