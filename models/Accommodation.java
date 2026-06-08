@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-public class Accommodation implements Displayable, Bookable {
+public abstract class Accommodation implements Displayable, Bookable {
     private int accId;
     private String name;
     private double pricePerNight;
@@ -45,10 +45,7 @@ public class Accommodation implements Displayable, Bookable {
         }
     }
 
-    // inheritance
-    public String getType() {
-        return "ACCOMMODATION";
-    }
+    public abstract String getType();
 
     @Override
     public boolean canAccommodate(int numberOfGuests) {
