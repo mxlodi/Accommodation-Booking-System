@@ -4,23 +4,33 @@ import interfaces.Displayable;
 import java.time.LocalDateTime;
 
 public class Payment implements Displayable {
+
+    // Nested enum
+    // ONLINE :funds captured immediately via digital gateway
+    // PAY_AT_PROPERTY :booking secured online, guest settles at check-in
+    // (property handles card, KHQR, etc. directly)
+    public enum PaymentMethod {
+        ONLINE,
+        PAY_AT_PROPERTY
+    }
+
     private int paymentId;
     private Booking booking;
     private double amount;
-    private String method;
+    private PaymentMethod method;
     private LocalDateTime paymentDate;
     private boolean completed;
 
-    // Constructor overload 1: defaults to CASH payment method
+    // Constructor overload 1: defaults to ONLINE (standard for booking systems)
     public Payment(int paymentId, Booking booking) {
-        this(paymentId, booking, "CASH");
+        this(paymentId, booking, PaymentMethod.ONLINE);
     }
 
-    // Constructor overload 2: caller specifies the method
-    public Payment(int paymentId, Booking booking, String method) {
+    // Constructor overload 2: caller specifies the payment method
+    public Payment(int paymentId, Booking booking, PaymentMethod method) {
         this.paymentId = paymentId;
         this.booking = booking;
-        this.method = (method != null) ? method : "CASH";
+        this.method = (method != null) ? method : PaymentMethod.ONLINE;
         this.amount = (booking != null) ? booking.calculateTotalPrice() : 0.0;
         this.paymentDate = LocalDateTime.now();
         this.completed = false;
@@ -34,7 +44,7 @@ public class Payment implements Displayable {
         return booking;
     }
 
-    public String getMethod() {
+    public PaymentMethod getMethod() {
         return method;
     }
 
@@ -51,32 +61,33 @@ public class Payment implements Displayable {
     }
 
     public boolean isValidMethod() {
-        return "CASH".equals(method) || "CARD".equals(method) || "ONLINE".equals(method);
+        return method == PaymentMethod.ONLINE || method == PaymentMethod.PAY_AT_PROPERTY;
     }
 
     // Overload 1: process with the already-set method
     public void processPayment() {
-        if (!completed) {
-            this.completed = true;
+    if (!completed) {
+        if (method == PaymentMethod.ONLINE) {
+            this.completed = true; // Mark as paid
+            this.paymentDate = LocalDateTime.now(); // Date of payment
             System.out.println("[PAYMENT] #" + paymentId
-                    + " processed via " + method
-                    + " | Amount: $" + amount);
+                    + " -> Online payment captured | Amount: $" + amount);
+        } else {
+            this.completed = false; // Remains false because they haven't arrived at the check-in yet
+            System.out.println("[PAYMENT] #" + paymentId
+                    + " -> Pay at Property | $" + amount + " pending at check-in");
+            }
         }
     }
-
-    // Overload 2: process and switch to a different method
-    public void processPayment(String method) {
+    // Overload 2: switch method then process
+    // example: guest originally chose PAY_AT_PROPERTY but decides to pay online instead
+    public void processPayment(PaymentMethod method) {
         this.method = method;
-        if (!completed) {
-            this.completed = true;
-            System.out.println("[PAYMENT] #" + paymentId
-                    + " processed via " + method
-                    + " | Amount: $" + amount);
-        }
+        processPayment();
     }
 
-    // Overload 3: process with a method and apply a discount to the amount
-    public void processPayment(String method, double discount) {
+    // Overload 3: switch method, apply discount, then process
+    public void processPayment(PaymentMethod method, double discount) {
         this.method = method;
         if (!completed) {
             this.amount = Math.max(0, this.amount - discount);

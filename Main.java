@@ -21,15 +21,15 @@ public class Main {
         repo.addAccommodation(loft);
         repo.addAccommodation(family);
 
+        System.out.println("\n=== DEMO ===\n");
         ArrayList<Accommodation> accommodations = new ArrayList<>();
         accommodations.add(plaza);
         accommodations.add(loft);
         accommodations.add(family);
 
-        System.out.println("\n");
         for (Accommodation acc : accommodations) {
-            acc.display();
-            System.out.println("Type: " + acc.getType());
+            acc.display(); // calls Hotel / Apartment / GuestHouse version
+            System.out.println("  Type: " + acc.getType());
             System.out.println();
         }
 
@@ -44,6 +44,26 @@ public class Main {
         repo.addBooking(teddy, plaza, "2026-10-01T14:00", "2026-10-04T11:00");
         repo.addBooking(alice, loft, "2026-10-10T15:00", "2026-10-13T11:00");
 
+        // === Payments ===
+        Booking teddyBooking = repo.getAllBookings().iterator().next();
+
+        // 1. Teddy pays online immediately (Becomes Paid: true)
+        Payment p1 = new Payment(501, teddyBooking, Payment.PaymentMethod.ONLINE);
+        p1.processPayment();
+        repo.addPayment(p1);
+
+        // 2. Alice reserves via Pay At Property (Stays Paid: false)
+        Booking aliceBooking = (Booking) repo.getAllBookings().toArray()[1];
+        Payment p2 = new Payment(502, aliceBooking, Payment.PaymentMethod.PAY_AT_PROPERTY);
+        p2.processPayment(); //  pending at check-in
+        repo.addPayment(p2);
+
+        // --- SIMULATING THE FUTURE: ALICE ARRIVES IN OCTOBER 2026 ---
+        System.out.println("\n>>> [SYSTEM SIMULATION]: Alice arrives at City Loft for Check-In...");
+        // The property clerk swipes her card or scans her KHQR code
+        p2.processPayment(Payment.PaymentMethod.ONLINE); // Using your Overload 2 method to switch method then process
+
         repo.displayAllData();
+
     }
 }
