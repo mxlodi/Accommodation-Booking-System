@@ -3,11 +3,13 @@ package models;
 import interfaces.Displayable;
 
 public class User implements Displayable {
+    // --- FIELDS ---
     private int userId;
     private String name;
     private String email;
     private String phone;
 
+    // --- CONSTRUCTOR ---
     public User(int userId, String name, String email, String phone) {
         this.userId = userId;
         setName(name);
@@ -15,6 +17,7 @@ public class User implements Displayable {
         setPhone(phone);
     }
 
+    // --- GETTERS ---
     public int getUserId() {
         return userId;
     }
@@ -31,6 +34,7 @@ public class User implements Displayable {
         return phone;
     }
 
+    // --- SETTERS WITH VALIDATION ---
     public void setName(String name) {
         if (name != null && !name.isEmpty()) {
             this.name = name;
@@ -58,6 +62,7 @@ public class User implements Displayable {
         }
     }
 
+    // --- DISPLAYABLE INTERFACE IMPLEMENTATION ---
     @Override
     public void display() {
         System.out.println("- USER DETAILS -");
@@ -65,10 +70,5 @@ public class User implements Displayable {
         System.out.println("Name: " + name);
         System.out.println("Email: " + email);
         System.out.println("Phone: " + phone);
-    }
-
-    @Override
-    public void displayName() {
-        System.out.println(name);
     }
 }

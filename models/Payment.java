@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 public class Payment implements Displayable {
 
+    // --- NESTED ENUM ---
     // Nested enum
     // ONLINE :funds captured immediately via digital gateway
     // PAY_AT_PROPERTY :booking secured online, guest settles at check-in
@@ -14,6 +15,7 @@ public class Payment implements Displayable {
         PAY_AT_PROPERTY
     }
 
+    // --- FIELDS ---
     private int paymentId;
     private Booking booking;
     private double amount;
@@ -21,6 +23,7 @@ public class Payment implements Displayable {
     private LocalDateTime paymentDate;
     private boolean completed;
 
+    // --- CONSTRUCTORS ---
     // Constructor overload 1: defaults to ONLINE (standard for booking systems)
     public Payment(int paymentId, Booking booking) {
         this(paymentId, booking, PaymentMethod.ONLINE);
@@ -36,6 +39,7 @@ public class Payment implements Displayable {
         this.completed = false;
     }
 
+    // --- GETTERS ---
     public int getPaymentId() {
         return paymentId;
     }
@@ -60,10 +64,12 @@ public class Payment implements Displayable {
         return paymentDate;
     }
 
+    // --- VALIDATION METHODS ---
     public boolean isValidMethod() {
         return method == PaymentMethod.ONLINE || method == PaymentMethod.PAY_AT_PROPERTY;
     }
 
+    // --- PAYMENT PROCESSING METHODS ---
     // Overload 1: process with the already-set method
     public void processPayment() {
     if (!completed) {
@@ -99,6 +105,7 @@ public class Payment implements Displayable {
         }
     }
 
+    // --- DISPLAYABLE INTERFACE IMPLEMENTATION ---
     @Override
     public void display() {
         System.out.println("Payment #" + paymentId
@@ -106,10 +113,5 @@ public class Payment implements Displayable {
                 + " | Amount: $" + amount
                 + " | Paid: " + completed
                 + " | Date: " + paymentDate);
-    }
-
-    @Override
-    public void displayName() {
-        System.out.println("Payment #" + paymentId);
     }
 }

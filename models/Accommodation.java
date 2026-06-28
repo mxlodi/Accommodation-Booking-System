@@ -7,11 +7,13 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 
 public abstract class Accommodation implements Displayable, Bookable {
+    // --- FIELDS ---
     private int accId;
     private String name;
     private double pricePerNight;
     private int capacity;
 
+    // --- CONSTRUCTOR ---
     // Constructor using setters for validation safety
     public Accommodation(int accId, String name, double pricePerNight, int capacity) {
         this.accId = accId;
@@ -20,6 +22,8 @@ public abstract class Accommodation implements Displayable, Bookable {
         setCapacity(capacity);
     }
 
+
+    // --- SETTERS WITH VALIDATION ---
     // Setters with validation logic restored
     public void setName(String name) {
         if (name == null || name.trim().isEmpty()) {
@@ -45,8 +49,12 @@ public abstract class Accommodation implements Displayable, Bookable {
         }
     }
 
+
+    // --- ABSTRACT METHODS ---
     public abstract String getType();
 
+
+    // --- BOOKABLE INTERFACE IMPLEMENTATION ---
     @Override
     public boolean canAccommodate(int numberOfGuests) {
         return numberOfGuests > 0 && numberOfGuests <= capacity;
@@ -57,6 +65,8 @@ public abstract class Accommodation implements Displayable, Bookable {
         return pricePerNight * nights;
     }
 
+
+    // --- OVERLOADED PRICE CALCULATION METHODS ---
     // Overloaded method
     public double calculatePrice(int nights, double discount) {
         double total = pricePerNight * nights;
@@ -78,6 +88,8 @@ public abstract class Accommodation implements Displayable, Bookable {
         return pricePerNight * nights;
     }
 
+
+    // --- GETTERS ---
     // Common Getters
     public int getAccId() {
         return accId;
@@ -95,6 +107,8 @@ public abstract class Accommodation implements Displayable, Bookable {
         return capacity;
     }
 
+
+    // --- BUSINESS LOGIC ---
     // Shared business logic: Check if dates overlap with existing bookings
     public boolean isAvailable(LocalDate checkIn, LocalDate checkOut, Collection<Booking> allBookings) {
         for (Booking b : allBookings) {
@@ -108,17 +122,14 @@ public abstract class Accommodation implements Displayable, Bookable {
         }
         return true;
     }
+    
 
+    // --- DISPLAYABLE INTERFACE IMPLEMENTATION ---
     @Override
     public void display() {
         System.out.println("[" + getType() + "] " + name);
         System.out.println("  ID       : " + accId);
         System.out.println("  Price    : $" + pricePerNight + "/night");
         System.out.println("  Capacity : " + capacity + " guests");
-    }
-
-    @Override
-    public void displayName() {
-        System.out.println(getType() + ": " + name);
     }
 }

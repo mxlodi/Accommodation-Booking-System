@@ -1,9 +1,11 @@
 package models;
 
 public class Apartment extends Accommodation {
+    // --- FIELDS ---
     private int floor;
     private boolean hasElevator;
 
+    // --- CONSTRUCTOR ---
     public Apartment(int id, String name, double price, int capacity,
                      int floor, boolean elevator) {
         super(id, name, price, capacity);
@@ -11,9 +13,11 @@ public class Apartment extends Accommodation {
         this.hasElevator = elevator;
     }
 
+    // --- GETTERS ---
     public int getFloor() { return floor; }
     public boolean hasElevator()  { return hasElevator; }
 
+    // --- OVERRIDDEN METHODS ---
     @Override
     public String getType() { return "APARTMENT"; }
 
@@ -23,7 +27,4 @@ public class Apartment extends Accommodation {
         System.out.println("  Floor    : " + floor);
         System.out.println("  Elevator : " + (hasElevator ? "Yes" : "No"));
     }
-
-    @Override
-    public void displayName() { System.out.println("Apartment: " + getName()); }
 }

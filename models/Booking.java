@@ -4,6 +4,7 @@ import interfaces.Displayable;
 import java.time.LocalDateTime;
 
 public class Booking implements Displayable {
+    // --- FIELDS ---
     private int bookingId;
     private User user;
     private Accommodation accommodation;
@@ -11,6 +12,7 @@ public class Booking implements Displayable {
     private LocalDateTime checkOutDateTime;
     private BookingStatus status;
 
+    // --- CONSTRUCTOR ---
     // Constructor accepts ISO date-time strings: "2026-10-01T14:00"
     public Booking(int id, User user, Accommodation acc,
             String checkIn, String checkOut, BookingStatus status) {
@@ -22,11 +24,13 @@ public class Booking implements Displayable {
         this.status = status;
     }
 
+    // --- VALIDATION METHODS ---
     public boolean isValidDates() {
         return checkInDateTime != null && checkOutDateTime != null
                 && checkOutDateTime.isAfter(checkInDateTime);
     }
 
+    // --- GETTERS ---
     public int getBookingId() {
         return bookingId;
     }
@@ -52,7 +56,6 @@ public class Booking implements Displayable {
     public LocalDateTime getCheckInDateTime() {
         return checkInDateTime;
     }
-
     public LocalDateTime getCheckOutDateTime() {
         return checkOutDateTime;
     }
@@ -61,10 +64,12 @@ public class Booking implements Displayable {
         return status;
     }
 
+    // --- SETTERS ---
     public void setStatus(BookingStatus status) {
         this.status = status;
     }
 
+    // --- STATUS MANAGEMENT ---
     public boolean canChangeTo(BookingStatus newStatus) {
         if (this.status == BookingStatus.CONFIRMED) {
             return newStatus == BookingStatus.CHECKED_IN
@@ -76,6 +81,7 @@ public class Booking implements Displayable {
         return false;
     }
 
+    // --- BUSINESS LOGIC ---
     public double calculateTotalPrice() {
         if (accommodation == null)
             return 0.0;
@@ -87,6 +93,7 @@ public class Booking implements Displayable {
         return status == BookingStatus.CONFIRMED || status == BookingStatus.CHECKED_IN;
     }
 
+    // --- DISPLAYABLE INTERFACE IMPLEMENTATION ---
     @Override
     public void display() {
         System.out.println("Booking #" + bookingId
@@ -95,10 +102,5 @@ public class Booking implements Displayable {
                 + " | " + getCheckInDate() + " -> " + getCheckOutDate()
                 + " | Status: " + status
                 + " | Total: $" + calculateTotalPrice());
-    }
-
-    @Override
-    public void displayName() {
-        System.out.println("Booking #" + bookingId);
     }
 }
